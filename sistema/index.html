@@ -5,29 +5,77 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <meta name="theme-color" content="#29342e">
-<title>Acesso ao sistema · Vorela</title>
+<title>Sistema administrativo · Vorela</title>
 <style>
-:root{color-scheme:light;--ink:#29342e;--bg:#f5f2ec;--line:#dcd6cb}
+:root{color-scheme:light;--ink:#29342e;--bg:#f5f2ec;--paper:#fbf9f5;--line:#dcd6cb;--muted:#526354}
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 body{margin:0;min-height:100svh;background:var(--bg);color:var(--ink);font:15px/1.6 Arial,Helvetica,sans-serif;display:flex;flex-direction:column}
-a{color:inherit}a:focus-visible{outline:3px solid #78917b;outline-offset:4px}
-header{border-bottom:1px solid var(--line);padding:27px max(24px,calc((100vw - 1080px)/2));display:flex;align-items:center;justify-content:space-between;gap:24px}
+a{color:inherit}a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #78917b;outline-offset:3px}
+header{border-bottom:1px solid var(--line);padding:24px max(22px,calc((100vw - 1080px)/2));display:flex;align-items:center;justify-content:space-between;gap:20px}
 .brand{text-decoration:none;font-size:24px;letter-spacing:.24em;white-space:nowrap}
 .back{text-decoration:none;font-size:13px;border-bottom:1px solid currentColor;padding-bottom:3px}
-main{flex:1;display:flex;align-items:center;justify-content:center;padding:56px 24px}
-.panel{width:min(100%,560px);border:1px solid var(--line);padding:clamp(26px,6vw,56px);background:#fbf9f5}
+main{flex:1;display:flex;align-items:center;justify-content:center;padding:48px 22px}
+.panel{width:min(100%,540px);border:1px solid var(--line);padding:clamp(25px,6vw,48px);background:var(--paper)}
+.panel.wide{width:min(100%,760px)}
 .eyebrow{font-size:11px;letter-spacing:.17em;text-transform:uppercase;color:#596a5e}
-h1{font:normal clamp(39px,8vw,57px)/1.06 Georgia,'Times New Roman',serif;letter-spacing:-.035em;margin:20px 0}
-p{color:#506055;margin:0 0 18px}
-.note{padding:17px 18px;background:#e5e8df;color:#29342e;border-left:3px solid #708c76;font-size:13px}
-.cta{display:inline-flex;align-items:center;justify-content:center;min-height:49px;padding:12px 21px;background:#29342e;color:white;text-decoration:none;font-size:13px;font-weight:bold;margin-top:25px}
-footer{padding:20px 24px;text-align:center;font-size:11px;color:#566357}
-@media(max-width:420px){header{padding:21px 19px}.brand{font-size:21px}.back{font-size:12px}}
+h1{font:normal clamp(37px,8vw,57px)/1.08 Georgia,'Times New Roman',serif;letter-spacing:-.035em;margin:14px 0 20px}
+h2{font:normal 28px/1.2 Georgia,'Times New Roman',serif;margin:8px 0 12px}
+p{color:var(--muted);margin:0 0 20px}
+label{display:block;font-weight:600;font-size:13px;margin-top:16px;margin-bottom:5px}
+input{display:block;width:100%;font:inherit;border:1px solid #abb6a9;border-radius:0;background:white;color:var(--ink);padding:13px;min-height:49px}
+button{font:inherit;cursor:pointer}
+.button{display:inline-flex;align-items:center;justify-content:center;min-height:49px;padding:12px 21px;background:var(--ink);color:#fff;border:1px solid var(--ink);text-decoration:none;font-size:13px;font-weight:bold}
+.button:disabled{opacity:.6;cursor:wait}
+.button.outline{background:transparent;color:var(--ink)}
+.full{width:100%;margin-top:23px}
+.status{font-size:13px;min-height:20px;margin-top:15px}
+.status[data-error="true"]{color:#9a392c}
+.note{background:#e5e8df;border-left:3px solid #708c76;padding:15px 17px;font-size:13px;margin-top:24px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:24px 0}
+.tile{border:1px solid var(--line);padding:21px;min-height:130px;background:#fff}
+.tile span{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#627263}
+.tile h2{font-size:25px;margin-top:15px}
+.muted{font-size:13px;color:var(--muted)}
+.user{overflow-wrap:anywhere}
+.actions{display:flex;justify-content:space-between;gap:18px;align-items:center;margin-top:25px}
+footer{padding:20px;text-align:center;font-size:11px;color:#566357}
+@media(max-width:500px){header{padding:18px}.brand{font-size:20px}.back{font-size:12px}.grid{grid-template-columns:1fr}.tile{min-height:105px}.actions{flex-direction:column;align-items:stretch}.actions .button{width:100%}}
 </style>
 </head>
 <body>
 <header><a class="brand" href="/" aria-label="Vorela, início">VORELA</a><a class="back" href="/">Voltar ao site</a></header>
-<main><section class="panel" aria-labelledby="title"><span class="eyebrow">Área interna · Vorela</span><h1 id="title">Acesso ao sistema</h1><p>Estamos preparando a área restrita da Vorela para as próximas funções administrativas.</p><div class="note"><strong>Login ainda não habilitado.</strong><br>O acesso com usuário e senha só será liberado após a configuração de um serviço de autenticação seguro e separado dos demais projetos. Esta página não solicita nem armazena senhas.</div><a class="cta" href="/">Voltar para a Vorela ↗</a></section></main>
-<footer>Vorela Ambientes Planejados · Área interna em implantação</footer>
+<main>
+  <section id="loading" class="panel" aria-live="polite"><span class="eyebrow">Área interna · Vorela</span><h1>Verificando acesso</h1><p>Aguarde um instante…</p></section>
+  <section id="login-section" class="panel" aria-labelledby="login-title" hidden>
+    <span class="eyebrow">Área interna · Vorela</span>
+    <h1 id="login-title">Acesso ao sistema</h1>
+    <p>Entre com o e-mail e a senha da sua conta administrativa.</p>
+    <form id="login-form">
+      <label for="email">E-mail</label>
+      <input type="email" id="email" name="email" autocomplete="username" inputmode="email" required maxlength="254" placeholder="seu@email.com">
+      <label for="password">Senha</label>
+      <input type="password" id="password" name="password" autocomplete="current-password" required minlength="8" placeholder="Sua senha">
+      <button class="button full" id="login-submit" type="submit">Entrar no sistema</button>
+    </form>
+    <p id="login-status" class="status" role="status" aria-live="polite"></p>
+    <div class="note">Apenas contas autorizadas têm acesso. Não existe cadastro público nesta página.</div>
+  </section>
+  <section id="dashboard" class="panel wide" aria-labelledby="dashboard-title" hidden>
+    <span class="eyebrow">Área administrativa · Vorela</span>
+    <h1 id="dashboard-title">Painel da Vorela</h1>
+    <p class="user">Conta autorizada: <strong id="user-email"></strong></p>
+    <div class="grid">
+      <div class="tile"><span>Em preparação</span><h2>Clientes e contatos</h2><p class="muted">Organização do relacionamento com o cliente.</p></div>
+      <div class="tile"><span>Em preparação</span><h2>Orçamentos</h2><p class="muted">Propostas, revisões e histórico.</p></div>
+      <div class="tile"><span>Em preparação</span><h2>Projetos</h2><p class="muted">Etapas e acompanhamento.</p></div>
+      <div class="tile"><span>Em preparação</span><h2>Financeiro</h2><p class="muted">Controle separado da operação.</p></div>
+    </div>
+    <p class="muted">O login e a verificação de permissão estão implementados. Os módulos acima são apenas uma visão do planejamento; ainda não armazenam dados.</p>
+    <div class="actions"><a class="back" href="/">Ir para o site</a><button id="logout-button" class="button outline" type="button">Sair da conta</button></div>
+  </section>
+</main>
+<footer>Vorela Ambientes Planejados · Área interna</footer>
+<script type="module" src="/sistema/auth.js"></script>
 </body>
 </html>
