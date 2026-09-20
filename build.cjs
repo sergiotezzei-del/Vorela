@@ -12,8 +12,24 @@ if (source.split(styleEnd).length !== 2) {
 const menuFix = `
 /* Exibe corretamente os três traços do menu em navegadores móveis. */
 .menu-toggle svg, .menu-toggle svg path { fill: none !important; stroke: currentColor !important; stroke-width: 2 !important; stroke-linecap: round !important; stroke-linejoin: round !important; }
+/* Imagem real de referência na apresentação, no lugar do quadro conceitual. */
+.intro-panel { display: block; position: relative; overflow: hidden; min-height: 0; padding: 0; margin: 0; background: #d9d0c2; }
+.intro-panel img { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1.02; object-fit: cover; object-position: center; }
+.intro-panel figcaption { position: absolute; right: 12px; bottom: 12px; left: 12px; background: rgba(245,242,236,.96); padding: 11px 13px; color: #29342e; font: 11px/1.55 Arial,Helvetica,sans-serif; }
+.intro-panel figcaption a { text-decoration: underline; text-underline-offset: 2px; }
 `;
 source = source.replace(styleEnd, menuFix + styleEnd);
+
+// Substituição pontual: preservar todas as demais seções e links do site.
+const oldPanel = '<div class="intro-panel" aria-hidden="true"><div class="intro-panel-inner"><span>Proporção.</span><span>Espaço.</span><span>Textura.</span><span>Detalhe.</span></div></div>';
+if (source.split(oldPanel).length !== 2) {
+  throw new Error('Quadro conceitual não localizado exatamente uma vez; publicação interrompida para evitar alterações indevidas.');
+}
+const newPanel = `<figure class="intro-panel">
+<img src="https://commons.wikimedia.org/wiki/Special:FilePath/Modern_kitchen_and_dining_area_with_stylish_furnishings_and_natural_light_in_a_contemporary_home_setting.jpg?width=960" alt="Fotografia de referência de cozinha e sala de jantar integradas, com armários e luz natural" loading="lazy" decoding="async">
+<figcaption>Inspiração de ambiente planejado, não projeto executado pela Vorela. Foto: <a href="https://commons.wikimedia.org/wiki/File:Modern_kitchen_and_dining_area_with_stylish_furnishings_and_natural_light_in_a_contemporary_home_setting.jpg" target="_blank" rel="noopener noreferrer">Shixart1985</a>, <a href="https://creativecommons.org/licenses/by/2.0/" target="_blank" rel="noopener noreferrer">CC BY 2.0</a>.</figcaption>
+</figure>`;
+source = source.replace(oldPanel, newPanel);
 
 // O número é o contato comercial informado e autorizado pelo responsável.
 const whatsappUrl = 'https://wa.me/5516996444787?text=' + encodeURIComponent('Olá! Conheci a Vorela e gostaria de conversar sobre móveis planejados para meu ambiente.');
@@ -40,4 +56,4 @@ for (const name of fs.readdirSync(root)) {
   if (fs.statSync(from).isDirectory()) fs.cpSync(from, to, { recursive: true });
   else fs.copyFileSync(from, to);
 }
-console.log(`Vorela: ${links} links de WhatsApp configurados; site estático gerado.`);
+console.log(`Vorela: fotografia da seção introdutória configurada; ${links} links de WhatsApp configurados; site estático gerado.`);
