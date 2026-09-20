@@ -15,6 +15,17 @@ const menuFix = `
 /* Fotografia da seção introdutória, sem legenda sobreposta. */
 .intro-panel { display: block; position: relative; overflow: hidden; min-height: 0; padding: 0; margin: 0; background: #d9d0c2; }
 .intro-panel img { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1.02; object-fit: cover; object-position: center; }
+/* Correção da grade e de textos longos em telas pequenas. */
+@media (max-width: 720px) {
+  .rooms { grid-template-columns: minmax(0, 1fr) !important; gap: 14px !important; }
+  .room { min-width: 0; min-height: 160px !important; padding: 22px !important; gap: 12px; }
+  .room h3 { font-size: clamp(29px, 8vw, 36px) !important; line-height: 1.15; overflow-wrap: anywhere; }
+  .room svg { flex: none; }
+  .section { padding-block: 62px !important; }
+  .process { padding-block: 64px !important; }
+  .intro h2, .section h2, .process h2, .final h2 { font-size: clamp(32px, 8.7vw, 42px) !important; line-height: 1.12 !important; overflow-wrap: break-word; }
+  .section-head p, .process p { max-width: 100%; }
+}
 `;
 source = source.replace(styleEnd, menuFix + styleEnd);
 
@@ -82,4 +93,4 @@ for (const name of fs.readdirSync(root)) {
   if (fs.statSync(from).isDirectory()) fs.cpSync(from, to, { recursive: true });
   else fs.copyFileSync(from, to);
 }
-console.log(`Vorela: fotos provisórias sem legendas; ${links} links de WhatsApp configurados; site estático gerado.`);
+console.log(`Vorela: layout móvel corrigido; fotos provisórias sem legendas; ${links} links de WhatsApp configurados; site estático gerado.`);
