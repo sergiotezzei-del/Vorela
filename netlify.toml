@@ -1,6 +1,7 @@
-# Vorela: site estático gratuito; sem função ou build.
+# Gera somente HTML estático, sem dependências pagas, banco ou funções.
 [build]
-  publish = "."
+  command = "node build.cjs"
+  publish = "dist"
 
 # Prévia: não permitir indexação antes da validação da marca e do conteúdo.
 [[headers]]
