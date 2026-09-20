@@ -29,6 +29,13 @@ const menuFix = `
 `;
 source = source.replace(styleEnd, menuFix + styleEnd);
 
+// Mostra a entrada do futuro sistema nos dois menus. Não simula autenticação no navegador.
+const contactMenuLink = '<a href="#contato">Contato</a>';
+if (source.split(contactMenuLink).length !== 3) {
+  throw new Error('Esperava exatamente dois menus com link de contato; publicação interrompida.');
+}
+source = source.replaceAll(contactMenuLink, contactMenuLink + '<a href="/sistema/">Acesso ao sistema</a>');
+
 // Fotos temporárias do Pexels: licença gratuita para uso comercial, sem crédito público obrigatório.
 // Manter os registros de origem no código para controle de licença e substituição futura.
 // https://www.pexels.com/photo/wooden-cabinets-in-the-modern-kitchen-8143944/
@@ -93,4 +100,4 @@ for (const name of fs.readdirSync(root)) {
   if (fs.statSync(from).isDirectory()) fs.cpSync(from, to, { recursive: true });
   else fs.copyFileSync(from, to);
 }
-console.log(`Vorela: layout móvel corrigido; fotos provisórias sem legendas; ${links} links de WhatsApp configurados; site estático gerado.`);
+console.log(`Vorela: menu com acesso ao sistema; layout móvel corrigido; ${links} links de WhatsApp configurados; site estático gerado.`);
