@@ -1,6 +1,6 @@
 # Gera somente HTML estático, sem dependências pagas, banco ou funções.
 [build]
-  command = "node build.cjs && node gallery.cjs"
+  command = "node build.cjs && node gallery.cjs && node pwa.cjs"
   publish = "dist"
 
 # Prévia: não permitir indexação antes da validação da marca e do conteúdo.
@@ -10,3 +10,14 @@
     X-Robots-Tag = "noindex, nofollow"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/manifest.webmanifest"
+  [headers.values]
+    Content-Type = "application/manifest+json; charset=utf-8"
+    Cache-Control = "public, max-age=300"
+
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache"
