@@ -1,6 +1,6 @@
 # Gera somente HTML estático, sem dependências pagas, banco ou funções.
 [build]
-  command = "node build.cjs"
+  command = "node build.cjs && node gallery.cjs"
   publish = "dist"
 
 # Prévia: não permitir indexação antes da validação da marca e do conteúdo.
