@@ -29,14 +29,22 @@ test('separa comissão, recebido e saldo', () => {
 
 test('consolida várias vendas', () => {
   const t=dashboardTotals([
-    {saleCents:1000000,commissionMode:'percent',commissionPercent:10,payments:[{cents:50000}]},
-    {saleCents:2000000,commissionMode:'fixed',commissionCents:150000,payments:[]}
+    {saleCents:1000000,commissionMode:'percent',commissionPercent:10,payments:[{cents:50000}],items:[{name:'Cozinha'}]},
+    {saleCents:2000000,commissionMode:'fixed',commissionCents:150000,payments:[],items:[{name:'Quarto'},{name:'Quarto'}]}
   ]);
-  assert.deepEqual(t,{saleCents:3000000,commissionCents:250000,paidCents:50000,remainingCents:200000});
+  assert.deepEqual(t,{saleCents:3000000,commissionCents:250000,paidCents:50000,remainingCents:200000,itemCount:3});
 });
 
 test('normalização não confia em formato externo', () => {
-  const s=normalizeStore({sales:[{client:'Cliente', saleCents:1000, payments:'não'}]});
+  const s=normalizeStore({sales:[{client:'Cliente', project:'Cozinha antiga', saleCents:1000, payments:'não'}]});
   assert.equal(s.sales.length,1);
   assert.deepEqual(s.sales[0].payments,[]);
+  assert.equal(s.sales[0].items.length,1);
+  assert.equal(s.sales[0].items[0].name,'Cozinha antiga');
+});
+
+
+test('mantém itens repetidos para contabilizar quantidade real', () => {
+  const s=normalizeStore({sales:[{client:'Cliente',items:['Quarto','Quarto','Sala']}]});
+  assert.deepEqual(s.sales[0].items.map(x=>x.name),['Quarto','Quarto','Sala']);
 });
