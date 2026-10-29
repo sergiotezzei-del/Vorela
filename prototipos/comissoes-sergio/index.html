@@ -12,7 +12,7 @@ header{background:var(--green);color:white;padding:18px 22px;position:sticky;top
 .head{max-width:1200px;margin:auto;display:flex;gap:18px;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:12px}
 .logo{width:42px;height:42px;border:1px solid #ffffff55;border-radius:12px;display:grid;place-items:center;font:28px Georgia,serif}.brand strong{font:24px Georgia,serif}.brand small{display:block;color:#dce7e1}
 main{max-width:1200px;margin:26px auto;padding:0 18px 60px}.warning{background:#fff5d9;border:1px solid #e9d49b;border-radius:12px;padding:12px 15px;margin-bottom:18px}
-.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}.metric,.panel{background:var(--paper);border:1px solid var(--line);border-radius:16px;box-shadow:0 8px 30px #263b3020}.metric{padding:17px}.metric span{display:block;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.07em}.metric strong{display:block;font:26px Georgia,serif;margin-top:6px}
+.metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:18px 0}.metric,.panel{background:var(--paper);border:1px solid var(--line);border-radius:16px;box-shadow:0 8px 30px #263b3020}.metric{padding:17px}.metric span{display:block;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.07em}.metric strong{display:block;font:26px Georgia,serif;margin-top:6px}
 .toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:20px 0 12px}.toolbar h1,.toolbar h2{font:30px Georgia,serif;margin:0}.toolbar p{margin:4px 0;color:var(--muted)}
 button,.button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}.primary{background:var(--green);color:white}.secondary{background:#e9e4da;color:var(--ink)}.danger{background:#f8e4e1;color:var(--danger)}
 .actions{display:flex;gap:8px;flex-wrap:wrap}.panel{overflow:hidden}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;min-width:900px}th,td{text-align:left;padding:13px 14px;border-bottom:1px solid #ebe6dd;vertical-align:top}th{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);background:#faf8f3}.money{font-weight:700}.positive{color:var(--ok)}.negative{color:var(--danger)}
@@ -21,7 +21,8 @@ dialog{border:0;border-radius:18px;padding:0;max-width:760px;width:calc(100% - 2
 .formgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}label{font-size:12px;font-weight:700;color:#4d5652}input,select,textarea{width:100%;margin-top:5px;padding:11px 12px;border:1px solid #cfc8bc;border-radius:9px;background:white;font:inherit;color:var(--ink)}textarea{min-height:85px;resize:vertical}.wide{grid-column:1/-1}.formbuttons{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
 .sale-title{font-weight:700}.muted{color:var(--muted);font-size:12px}.badge{display:inline-block;padding:3px 8px;border-radius:999px;background:#e8efe9;color:var(--green);font-size:11px;font-weight:700}
 .details{padding:16px 18px;background:#faf8f3;border-top:1px solid var(--line)}.details-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.subpanel{background:white;border:1px solid var(--line);border-radius:12px;padding:13px}.subpanel h3{margin:0 0 9px;font:19px Georgia,serif}.line{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px dashed #e6e1d8}.line:last-child{border-bottom:0}
-.file{display:none}
+.item-picker{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end;margin-top:5px}.item-picker select{margin-top:0}.item-picker button{height:44px}.item-list{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.item-chip{display:inline-flex;align-items:center;gap:8px;background:#edf1eb;border:1px solid #d6ddd7;border-radius:999px;padding:7px 9px 7px 11px;font-size:13px;font-weight:700}.item-chip button{padding:0;width:22px;height:22px;border-radius:50%;background:#d9e1dc;color:#385047;line-height:1}.file{display:none}
+@media(max-width:1000px){.metrics{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:800px){.metrics{grid-template-columns:1fr 1fr}.head{align-items:flex-start}.brand strong{font-size:20px}.toolbar{align-items:flex-start;flex-direction:column}.toolbar .actions{width:100%}.toolbar button{flex:1}.formgrid,.details-grid{grid-template-columns:1fr}.wide{grid-column:auto}}
 @media(max-width:480px){.metrics{grid-template-columns:1fr}.metric strong{font-size:24px}}
 </style>
@@ -36,6 +37,7 @@ dialog{border:0;border-radius:18px;padding:0;max-width:760px;width:calc(100% - 2
 <div class="metric"><span>Comissão total</span><strong id="m-commission">R$ 0,00</strong></div>
 <div class="metric"><span>Já recebido</span><strong id="m-paid">R$ 0,00</strong></div>
 <div class="metric"><span>A receber</span><strong id="m-open">R$ 0,00</strong></div>
+<div class="metric"><span>Itens vendidos</span><strong id="m-items">0</strong></div>
 </section>
 
 <div class="toolbar"><div><h1>Minhas vendas</h1><p>Controle das vendas, comissões combinadas, parcelas previstas e pagamentos recebidos.</p></div><div class="actions">
@@ -43,7 +45,7 @@ dialog{border:0;border-radius:18px;padding:0;max-width:760px;width:calc(100% - 2
 </div></div>
 
 <section class="panel tablewrap">
-<table><thead><tr><th>Venda</th><th>Data</th><th>Valor vendido</th><th>Comissão</th><th>Recebido</th><th>Saldo</th><th>Ações</th></tr></thead><tbody id="rows"></tbody></table>
+<table><thead><tr><th>Venda</th><th>Itens</th><th>Data</th><th>Valor vendido</th><th>Comissão</th><th>Recebido</th><th>Saldo</th><th>Ações</th></tr></thead><tbody id="rows"></tbody></table>
 <div class="empty" id="empty">Nenhuma venda cadastrada ainda.</div>
 </section>
 </main>
@@ -53,7 +55,25 @@ dialog{border:0;border-radius:18px;padding:0;max-width:760px;width:calc(100% - 2
 <div class="modalbody"><form id="sale-form"><div class="formgrid">
 <label>Cliente *<input name="client" required maxlength="120" autocomplete="off"></label>
 <label>Data da venda<input name="saleDate" type="date"></label>
-<label class="wide">Projeto / ambiente<input name="project" maxlength="160" placeholder="Ex.: cozinha planejada"></label>
+<div class="wide">
+<label>Itens / ambientes da venda</label>
+<div class="item-picker">
+<select id="item-select" aria-label="Escolher item para adicionar">
+<option value="Cozinha">Cozinha</option>
+<option value="Lavanderia">Lavanderia</option>
+<option value="Sala">Sala</option>
+<option value="Painel">Painel</option>
+<option value="Quarto">Quarto</option>
+<option value="Closet">Closet</option>
+<option value="Banheiro">Banheiro</option>
+<option value="Escritório">Escritório</option>
+<option value="Outro">Outro</option>
+</select>
+<button class="secondary" type="button" id="add-item">+ Adicionar</button>
+</div>
+<div class="item-list" id="item-list"></div>
+<p class="muted">Adicione um item por móvel/ambiente. Pode repetir, por exemplo, dois quartos.</p>
+</div>
 <label>Valor da venda (R$) *<input name="saleValue" inputmode="decimal" required placeholder="0,00"></label>
 <label>Forma da comissão<select name="commissionMode"><option value="percent">Percentual da venda</option><option value="fixed">Valor fixo</option></select></label>
 <label id="pct-wrap">Comissão (%)<input name="commissionPercent" inputmode="decimal" value="10"></label>
@@ -85,23 +105,33 @@ const KEY='vorela-sergio-comissoes-v1';
 let store=load();
 let editingSaleId=null;
 let actionSaleId=null;
+let draftItems=[];
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 function load(){try{return normalizeStore(JSON.parse(localStorage.getItem(KEY)||'null'))}catch{return normalizeStore(null)}}
 function save(){store.updatedAt=new Date().toISOString();localStorage.setItem(KEY,JSON.stringify(store));render()}
 function byId(id){return store.sales.find(s=>s.id===id)}
+function renderDraftItems(){
+ const list=$('#item-list');
+ list.innerHTML=draftItems.map((item,index)=>'<span class="item-chip">'+esc(item.name)+' <button type="button" data-remove-item="'+index+'" aria-label="Remover '+esc(item.name)+'">×</button></span>').join('');
+}
+function itemSummary(items){
+ const counts=new Map();
+ (items||[]).forEach(item=>counts.set(item.name,(counts.get(item.name)||0)+1));
+ return [...counts.entries()].map(([name,count])=>esc(name)+(count>1?' ×'+count:'')).join(' · ');
+}
 
 function render(){
  const d=dashboardTotals(store.sales);
- $('#m-sales').textContent=formatMoney(d.saleCents);$('#m-commission').textContent=formatMoney(d.commissionCents);$('#m-paid').textContent=formatMoney(d.paidCents);$('#m-open').textContent=formatMoney(d.remainingCents);
+ $('#m-sales').textContent=formatMoney(d.saleCents);$('#m-commission').textContent=formatMoney(d.commissionCents);$('#m-paid').textContent=formatMoney(d.paidCents);$('#m-open').textContent=formatMoney(d.remainingCents);$('#m-items').textContent=d.itemCount;
  $('#empty').hidden=store.sales.length>0;
  $('#rows').innerHTML=store.sales.map(s=>{
   const t=saleTotals(s); const diff=t.installmentDifferenceCents;
   const payments=(s.payments||[]).slice().sort((a,b)=>String(b.paidAt).localeCompare(String(a.paidAt)));
   const installments=(s.installments||[]).slice().sort((a,b)=>String(a.dueDate).localeCompare(String(b.dueDate)));
-  return '<tr><td><span class="sale-title">'+esc(s.client)+'</span><div class="muted">'+esc(s.project||'Sem descrição')+'</div></td><td>'+esc(s.saleDate||'—')+'</td><td class="money">'+formatMoney(s.saleCents)+'</td><td class="money">'+formatMoney(t.commissionCents)+'</td><td class="money positive">'+formatMoney(t.paidCents)+'</td><td class="money '+(t.remainingCents<0?'negative':'')+'">'+formatMoney(t.remainingCents)+'</td><td><div class="actions"><button class="secondary" data-act="detail" data-id="'+s.id+'">Detalhes</button><button class="secondary" data-act="edit" data-id="'+s.id+'">Editar</button></div></td></tr>'
-  +'<tr id="detail-'+s.id+'" hidden><td colspan="7" class="details"><div class="details-grid">'
+  return '<tr><td><span class="sale-title">'+esc(s.client)+'</span></td><td><strong>'+(s.items||[]).length+' item(ns)</strong><div class="muted">'+(itemSummary(s.items)||'Sem itens')+'</div></td><td>'+esc(s.saleDate||'—')+'</td><td class="money">'+formatMoney(s.saleCents)+'</td><td class="money">'+formatMoney(t.commissionCents)+'</td><td class="money positive">'+formatMoney(t.paidCents)+'</td><td class="money '+(t.remainingCents<0?'negative':'')+'">'+formatMoney(t.remainingCents)+'</td><td><div class="actions"><button class="secondary" data-act="detail" data-id="'+s.id+'">Detalhes</button><button class="secondary" data-act="edit" data-id="'+s.id+'">Editar</button></div></td></tr>'
+  +'<tr id="detail-'+s.id+'" hidden><td colspan="8" class="details"><div class="details-grid">'
   +'<div class="subpanel"><h3>Divisão prevista da comissão</h3>'+(installments.length?installments.map(i=>'<div class="line"><span>'+esc(i.dueDate||'Sem data')+(i.note?' · '+esc(i.note):'')+'</span><strong>'+formatMoney(i.cents)+'</strong></div>').join(''):'<p class="muted">Nenhuma parcela prevista cadastrada.</p>')
   +(diff!==0?'<p class="muted '+(diff<0?'negative':'')+'">Diferença entre comissão e parcelas: '+formatMoney(diff)+'</p>':'')+'<div class="actions"><button class="secondary" data-act="installment" data-id="'+s.id+'">+ Parcela prevista</button></div></div>'
   +'<div class="subpanel"><h3>Pagamentos recebidos</h3>'+(payments.length?payments.map(p=>'<div class="line"><span>'+esc(p.paidAt||'Sem data')+(p.method?' · '+esc(p.method):'')+(p.note?' · '+esc(p.note):'')+'</span><strong>'+formatMoney(p.cents)+'</strong></div>').join(''):'<p class="muted">Nenhum pagamento recebido.</p>')
@@ -117,7 +147,15 @@ function toggleMode(){
 $('#sale-form [name=commissionMode]').addEventListener('change',toggleMode);
 
 $('#new-sale').addEventListener('click',()=>{
- editingSaleId=null; $('#sale-title').textContent='Nova venda'; $('#sale-form').reset(); $('#sale-form [name=commissionPercent]').value='10'; toggleMode(); $('#sale-dialog').showModal();
+ editingSaleId=null; draftItems=[]; $('#sale-title').textContent='Nova venda'; $('#sale-form').reset(); $('#sale-form [name=commissionPercent]').value='10'; renderDraftItems(); toggleMode(); $('#sale-dialog').showModal();
+});
+$('#add-item').addEventListener('click',()=>{
+ draftItems.push({id:newId('item'),name:$('#item-select').value});
+ renderDraftItems();
+});
+$('#item-list').addEventListener('click',e=>{
+ const b=e.target.closest('[data-remove-item]'); if(!b)return;
+ draftItems.splice(Number(b.dataset.removeItem),1); renderDraftItems();
 });
 
 $('#sale-form').addEventListener('submit',e=>{
@@ -126,8 +164,9 @@ $('#sale-form').addEventListener('submit',e=>{
   const mode=String(f.get('commissionMode'));
   const now=new Date().toISOString();
   const current=editingSaleId?byId(editingSaleId):null;
+  if(!draftItems.length) throw new Error('Adicione pelo menos um item da venda.');
   const sale={
-   id:current?.id||newId('sale'), client:String(f.get('client')||'').trim(), project:String(f.get('project')||'').trim(), saleDate:String(f.get('saleDate')||''),
+   id:current?.id||newId('sale'), client:String(f.get('client')||'').trim(), items:draftItems.map(x=>({id:x.id||newId('item'),name:x.name})), saleDate:String(f.get('saleDate')||''),
    saleCents:moneyToCents(f.get('saleValue')), commissionMode:mode,
    commissionPercent:mode==='percent'?Number(String(f.get('commissionPercent')||'0').replace(',','.')):0,
    commissionCents:mode==='fixed'?moneyToCents(f.get('commissionValue')):0,
@@ -144,7 +183,7 @@ document.addEventListener('click',e=>{
  const b=e.target.closest('[data-act]'); if(!b)return;
  const id=b.dataset.id, act=b.dataset.act, sale=byId(id); if(!sale)return;
  if(act==='detail'){const row=$('#detail-'+CSS.escape(id)); row.hidden=!row.hidden}
- if(act==='edit'){editingSaleId=id; const f=$('#sale-form'); f.client.value=sale.client; f.project.value=sale.project; f.saleDate.value=sale.saleDate; f.saleValue.value=(sale.saleCents/100).toFixed(2).replace('.',','); f.commissionMode.value=sale.commissionMode; f.commissionPercent.value=String(sale.commissionPercent||0).replace('.',','); f.commissionValue.value=(sale.commissionCents/100).toFixed(2).replace('.',','); f.notes.value=sale.notes; $('#sale-title').textContent='Editar venda'; toggleMode(); $('#sale-dialog').showModal()}
+ if(act==='edit'){editingSaleId=id; draftItems=(sale.items||[]).map(x=>({...x})); const f=$('#sale-form'); f.client.value=sale.client; f.saleDate.value=sale.saleDate; f.saleValue.value=(sale.saleCents/100).toFixed(2).replace('.',','); f.commissionMode.value=sale.commissionMode; f.commissionPercent.value=String(sale.commissionPercent||0).replace('.',','); f.commissionValue.value=(sale.commissionCents/100).toFixed(2).replace('.',','); f.notes.value=sale.notes; $('#sale-title').textContent='Editar venda'; renderDraftItems(); toggleMode(); $('#sale-dialog').showModal()}
  if(act==='payment'){actionSaleId=id; $('#payment-form').reset(); $('#payment-form [name=paidAt]').value=new Date().toISOString().slice(0,10); $('#payment-dialog').showModal()}
  if(act==='installment'){actionSaleId=id; $('#installment-form').reset(); $('#installment-dialog').showModal()}
  if(act==='delete'&&confirm('Excluir esta venda e todos os pagamentos vinculados?')){store.sales=store.sales.filter(x=>x.id!==id);save()}
