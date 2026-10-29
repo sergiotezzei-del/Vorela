@@ -1,6 +1,6 @@
 'use strict';
 
-export const SCHEMA_VERSION = 1;
+export const SCHEMA_VERSION = 2;
 
 export function moneyToCents(value) {
   if (typeof value === 'number') {
@@ -51,8 +51,9 @@ export function dashboardTotals(sales) {
     acc.commissionCents += totals.commissionCents;
     acc.paidCents += totals.paidCents;
     acc.remainingCents += totals.remainingCents;
+    acc.itemCount += Array.isArray(sale.items) ? sale.items.length : 0;
     return acc;
-  }, {saleCents:0, commissionCents:0, paidCents:0, remainingCents:0});
+  }, {saleCents:0, commissionCents:0, paidCents:0, remainingCents:0, itemCount:0});
 }
 
 export function newId(prefix='id') {
@@ -69,7 +70,10 @@ export function normalizeStore(raw) {
     sales: sales.map(s => ({
       id: String(s.id || newId('sale')),
       client: String(s.client || '').slice(0,120),
-      project: String(s.project || '').slice(0,160),
+      items: (Array.isArray(s.items) ? s.items : (s.project ? [s.project] : [])).map(x => ({
+        id: String((x && typeof x === 'object' ? x.id : '') || newId('item')),
+        name: String(x && typeof x === 'object' ? x.name : x || '').slice(0,80),
+      })).filter(x => x.name),
       saleDate: String(s.saleDate || ''),
       saleCents: Number(s.saleCents || 0),
       commissionMode: s.commissionMode === 'percent' ? 'percent' : 'fixed',
