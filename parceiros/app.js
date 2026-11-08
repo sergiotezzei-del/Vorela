@@ -117,6 +117,7 @@ form.addEventListener('submit', async event => {
       email,
       password,
       options: {
+        emailRedirectTo: MANAGEMENT_URL,
         data: {
           registration_source: 'vorela_partner_page',
           intake_token: token
@@ -131,7 +132,7 @@ form.addEventListener('submit', async event => {
     if(data.session){
       showStatus('Cadastro enviado com sucesso. Agora ele fica aguardando aprovação da Vorela. Depois de aprovado, você poderá entrar no sistema para cadastrar e acompanhar suas vendas. <br><a class="login-link" href="'+MANAGEMENT_URL+'">Abrir Vorela Gestão →</a>','ok');
     }else{
-      showStatus('Cadastro enviado com sucesso. Confira seu e-mail para confirmar o acesso. Depois, seu cadastro ficará aguardando aprovação da Vorela. <br><a class="login-link" href="'+MANAGEMENT_URL+'">Abrir Vorela Gestão →</a>','ok');
+      showStatus('Cadastro enviado. Agora confirme seu e-mail. Depois da confirmação, você será levado para a Vorela Gestão e seu cadastro ficará aguardando aprovação. <br><a class="login-link" href="'+MANAGEMENT_URL+'">Abrir Vorela Gestão →</a>','ok');
     }
   }catch(error){
     console.error(error);
