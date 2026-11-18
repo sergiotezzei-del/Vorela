@@ -47,6 +47,14 @@ function togglePayment(){
   form.bankAgency.required = !pix;
   form.bankAccount.required = !pix;
   form.bankAccountType.required = !pix;
+
+  if(pix){
+    form.bankName.value = '';
+    form.bankAgency.value = '';
+    form.bankAccount.value = '';
+  }else{
+    form.pixKey.value = '';
+  }
 }
 paymentMethod.addEventListener('change',togglePayment);
 togglePayment();
@@ -135,14 +143,29 @@ form.addEventListener('submit', async event => {
       showStatus('Cadastro enviado. Agora confirme seu e-mail. Depois da confirmação, você será levado para a Vorela Gestão e seu cadastro ficará aguardando aprovação. <br><a class="login-link" href="'+MANAGEMENT_URL+'">Abrir Vorela Gestão →</a>','ok');
     }
   }catch(error){
-    console.error(error);
-    const msg = String(error?.message || '');
-    if(/already|registered|exists/i.test(msg)){
-      showStatus('Este e-mail já possui cadastro. Se você já se cadastrou, use o acesso da Vorela Gestão.','error');
-    }else if(/password/i.test(msg)){
-      showStatus('Não foi possível usar essa senha. Tente uma senha maior e mais forte.','error');
+    console.error('Falha no cadastro de parceiro:', {
+      code: error?.code || null,
+      status: error?.status || null,
+      message: error?.message || null
+    });
+
+    const code = String(error?.code || '').toLowerCase();
+    const msg = String(error?.message || '').toLowerCase();
+
+    if(code.includes('over_email_send_rate_limit') || msg.includes('rate limit')){
+      showStatus('Muitos e-mails de confirmação foram solicitados em pouco tempo. Aguarde alguns minutos e tente novamente.','error');
+    }else if(code.includes('email_address_not_authorized') || msg.includes('email address not authorized')){
+      showStatus('Não conseguimos enviar a confirmação para este e-mail. Fale com a Vorela para verificarmos o envio.','error');
+    }else if(code.includes('email_exists') || code.includes('user_already_exists') || /already|registered|exists/.test(msg)){
+      showStatus('Este e-mail já possui cadastro. Tente entrar na Vorela Gestão ou fale com a Vorela.','error');
+    }else if(code.includes('weak_password') || msg.includes('password')){
+      showStatus('Essa senha não foi aceita. Use pelo menos 8 caracteres e evite uma senha muito simples.','error');
+    }else if(msg.includes('database error saving new user') || msg.includes('duplicate key')){
+      showStatus('Já existe um cadastro usando este CPF ou e-mail, ou houve uma falha ao criar a conta. Fale com a Vorela para verificarmos.','error');
+    }else if(msg.includes('sending confirmation email') || msg.includes('smtp') || msg.includes('email')){
+      showStatus('O cadastro não foi concluído porque não conseguimos enviar o e-mail de confirmação. Tente novamente em alguns minutos.','error');
     }else{
-      showStatus('Não foi possível concluir o cadastro agora. Confira os dados e tente novamente.','error');
+      showStatus('Não conseguimos concluir o cadastro. Tente novamente. Se continuar, fale com a Vorela.','error');
     }
   }finally{
     submitButton.disabled = false;
